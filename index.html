@@ -601,12 +601,7 @@
   const wrongMsg = document.getElementById('wrong');
   const finale = document.getElementById('finale');
 
-  function unlock(instant) {
-    if (instant) {
-      finale.classList.add('open');
-      try { localStorage.setItem('sonya_unlocked', '1'); } catch(e) {}
-      return;
-    }
+  function unlock() {
     // create full-screen white flash, then transition to dark brown, then fade away revealing finale
     const flash = document.createElement('div');
     flash.className = 'flash-overlay';
@@ -624,7 +619,6 @@
       }, 900);
       setTimeout(() => flash.remove(), 2000);
     });
-    try { localStorage.setItem('sonya_unlocked', '1'); } catch(e) {}
   }
   function check() {
     const v = (answerInput.value || '').toLowerCase().replace(/[^а-яё]/g, '').trim();
@@ -637,12 +631,8 @@
       setTimeout(() => answerInput.classList.remove('shake'), 500);
     }
   }
-  // persistent unlock — open instantly on reload (no flash on revisit)
-  try {
-    if (localStorage.getItem('sonya_unlocked') === '1') {
-      unlock(true);
-    }
-  } catch(e) {}
+  // no persistence — finale always requires entering the word
+  try { localStorage.removeItem('sonya_unlocked'); } catch(e) {}
 
   // ====== REVEAL ON SCROLL ======
   const io = new IntersectionObserver((entries) => {
