@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Соне</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5ede4;
+    --bg-deep: #ede2d3;
+    --ink: #2a201b;
+    --ink-soft: #5a4a3e;
+    --accent: #b8553f;
+    --accent-soft: #d68a72;
+    --taupe: #8b7766;
+    --divider: rgba(42, 32, 27, 0.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 300;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--accent-soft); color: var(--bg); }
+
+  section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 8vh 6vw;
+    position: relative;
+  }
+  section.tight { min-height: auto; padding: 12vh 6vw; }
+
+  h1, h2, .display {
+    font-family: 'Fraunces', 'Cormorant Garamond', serif;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+    font-variation-settings: "opsz" 144, "SOFT" 80;
+  }
+  .italic-serif {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(180deg, #f5ede4 0%, #efe4d5 100%);
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(80px, 15vw, 200px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1;
+    margin-bottom: 0.4em;
+    color: var(--ink);
+    opacity: 0;
+    animation: fadeUp 1.6s ease 0.3s forwards;
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  .hero p.lead {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 2.4vw, 26px);
+    font-weight: 400;
+    max-width: 580px;
+    text-align: center;
+    color: var(--ink-soft);
+    opacity: 0;
+    animation: fadeUp 1.6s ease 1.1s forwards;
+    line-height: 1.55;
+  }
+  .hero p.lead em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero .hint {
+    position: absolute;
+    bottom: 5vh;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--taupe);
+    opacity: 0;
+    animation: fadeIn 2s ease 2.5s forwards;
+  }
+
+  /* KNOW */
+  .know {
+    background: var(--bg-deep);
+  }
+  .know p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 3.6vw, 40px);
+    line-height: 1.5;
+    text-align: center;
+    max-width: 740px;
+    margin-bottom: 0.6em;
+    color: var(--ink);
+    font-weight: 400;
+  }
+  .know p:first-child {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(32px, 5vw, 60px);
+    color: var(--accent);
+    margin-bottom: 1em;
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  .know p:last-child {
+    margin-top: 1em;
+    color: var(--ink-soft);
+  }
+
+  /* REASONS */
+  .reasons {
+    background: var(--bg);
+  }
+  .reasons h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(56px, 10vw, 130px);
+    font-style: italic;
+    font-weight: 300;
+    margin-bottom: 0.4em;
+    color: var(--accent);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  .reasons-intro {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(19px, 2.4vw, 26px);
+    color: var(--ink-soft);
+    margin-bottom: 3em;
+    text-align: center;
+    max-width: 620px;
+  }
+  .reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    max-width: 1100px;
+    width: 100%;
+  }
+  .reason {
+    padding: 24px 26px;
+    background: rgba(255, 251, 246, 0.6);
+    border-left: 2px solid var(--accent-soft);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+    border-radius: 0 6px 6px 0;
+    transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+  }
+  .reason:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(42, 32, 27, 0.08);
+    border-left-color: var(--accent);
+  }
+  .reason em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--accent);
+    font-size: 1.08em;
+  }
+
+  /* GALLERY */
+  .gallery {
+    background: var(--bg-deep);
+    padding: 12vh 4vw;
+  }
+  .gallery h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(56px, 10vw, 130px);
+    font-style: italic;
+    font-weight: 300;
+    margin-bottom: 0.4em;
+    color: var(--accent);
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  .gallery-hint {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(16px, 1.9vw, 20px);
+    color: var(--ink-soft);
+    margin-bottom: 4em;
+    text-align: center;
+    max-width: 560px;
+    line-height: 1.55;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 28px;
+    max-width: 1200px;
+    width: 100%;
+  }
+  figure {
+    margin: 0;
+    background: var(--bg);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(42, 32, 27, 0.07);
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
+  }
+  figure:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 36px rgba(42, 32, 27, 0.14);
+  }
+  figure img {
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+    display: block;
+    background: var(--bg-deep);
+  }
+  figcaption {
+    padding: 18px 20px 22px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .cipher {
+    color: var(--accent);
+    font-weight: 500;
+    font-style: italic;
+    border-bottom: 1px dotted var(--accent);
+    padding-bottom: 1px;
+  }
+
+  /* RIDDLE */
+  .riddle {
+    background: linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 100%);
+    text-align: center;
+  }
+  .riddle h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(48px, 8vw, 96px);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--accent);
+    margin-bottom: 0.4em;
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  .riddle p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(19px, 2.3vw, 26px);
+    color: var(--ink-soft);
+    margin-bottom: 2.5em;
+    max-width: 560px;
+  }
+  .riddle-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .riddle input {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(24px, 3.2vw, 34px);
+    font-style: italic;
+    text-align: center;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--taupe);
+    color: var(--ink);
+    padding: 10px 20px;
+    width: min(360px, 80vw);
+    outline: none;
+    letter-spacing: 0.15em;
+    transition: border-color 0.3s;
+  }
+  .riddle input:focus { border-bottom-color: var(--accent); }
+  .riddle button {
+    background: transparent;
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    padding: 13px 38px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 2px;
+  }
+  .riddle button:hover {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .wrong {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--accent);
+    margin-top: 1.5em !important;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .wrong.show { opacity: 1; }
+  .shake { animation: shake 0.5s; }
+
+  /* HIDDEN — finale */
+  .finale {
+    display: none;
+    background: #2a201b;
+    color: #f5ede4;
+    padding: 18vh 6vw;
+    text-align: center;
+  }
+  .finale.open { display: flex; }
+  .finale .word-reveal {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(72px, 14vw, 180px);
+    font-weight: 300;
+    color: #d68a72;
+    line-height: 1;
+    margin-bottom: 1.2em;
+    opacity: 0;
+    animation: fadeUp 2s ease 0.3s forwards;
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  .finale h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(30px, 5.2vw, 56px);
+    font-style: italic;
+    font-weight: 300;
+    color: #f5ede4;
+    margin-bottom: 1em;
+    opacity: 0;
+    animation: fadeUp 2s ease 1s forwards;
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+  .survived {
+    list-style: none;
+    max-width: 680px;
+    margin: 0 auto 4em;
+    text-align: left;
+  }
+  .survived li {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(19px, 2.5vw, 27px);
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(245, 237, 228, 0.12);
+    color: #ede2d3;
+    opacity: 0;
+    animation: fadeUp 1.4s ease forwards;
+    line-height: 1.5;
+  }
+  .survived li::before {
+    content: '— ';
+    color: #d68a72;
+  }
+  .survived li:nth-child(1) { animation-delay: 1.6s; }
+  .survived li:nth-child(2) { animation-delay: 1.85s; }
+  .survived li:nth-child(3) { animation-delay: 2.1s; }
+  .survived li:nth-child(4) { animation-delay: 2.35s; }
+  .survived li:nth-child(5) { animation-delay: 2.6s; }
+  .survived li:nth-child(6) { animation-delay: 2.85s; }
+  .survived li:nth-child(7) { animation-delay: 3.1s; }
+  .survived li:nth-child(8) { animation-delay: 3.35s; }
+  .survived li:nth-child(9) { animation-delay: 3.6s; }
+  .survived li em {
+    font-style: italic;
+    color: #d68a72;
+  }
+  .finale-videos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    max-width: 900px;
+    margin: 0 auto 4em;
+    width: 100%;
+  }
+  .finale-videos video {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 6px;
+    background: #1a1410;
+  }
+  .final-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(26px, 3.8vw, 42px);
+    color: #f5ede4;
+    margin-bottom: 0.6em;
+    max-width: 720px;
+    line-height: 1.5;
+  }
+  .sign {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(36px, 6vw, 68px);
+    font-weight: 300;
+    color: #d68a72;
+    margin-top: 1.5em;
+    letter-spacing: 0.06em;
+    font-variation-settings: "opsz" 144, "SOFT" 100;
+  }
+
+  /* ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .stagger > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .stagger.visible > * { opacity: 1; transform: translateY(0); }
+  .stagger.visible > *:nth-child(1) { transition-delay: 0s; }
+  .stagger.visible > *:nth-child(2) { transition-delay: 0.05s; }
+  .stagger.visible > *:nth-child(3) { transition-delay: 0.1s; }
+  .stagger.visible > *:nth-child(4) { transition-delay: 0.15s; }
+  .stagger.visible > *:nth-child(5) { transition-delay: 0.2s; }
+  .stagger.visible > *:nth-child(6) { transition-delay: 0.25s; }
+  .stagger.visible > *:nth-child(7) { transition-delay: 0.3s; }
+  .stagger.visible > *:nth-child(8) { transition-delay: 0.35s; }
+  .stagger.visible > *:nth-child(9) { transition-delay: 0.4s; }
+  .stagger.visible > *:nth-child(10) { transition-delay: 0.45s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 0.7; }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+  }
+
+  /* FLASH OVERLAY (reveal transition) */
+  .flash-overlay {
+    position: fixed;
+    inset: 0;
+    background: #ffffff;
+    opacity: 0;
+    z-index: 9999;
+    pointer-events: none;
+    transition: opacity 0.45s ease-out, background-color 0.6s ease-in;
+  }
+  .flash-overlay.bright {
+    opacity: 1;
+    background: #ffffff;
+  }
+  .flash-overlay.dim {
+    background: #2a201b;
+  }
+  .flash-overlay.fade {
+    opacity: 0;
+    transition: opacity 1s ease-in 0.1s;
+  }
+
+  @media (max-width: 600px) {
+    figure img { height: 280px; }
+    .reasons-grid { grid-template-columns: 1fr; }
+    section { padding: 10vh 5vw; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Соня</h1>
+  <p class="lead">Знаю, что сейчас тяжело.<br>Это не чтобы развеселить — это чтобы ты <em>не была одна</em>.</p>
+  <div class="hint">↓ Листай тихо</div>
+</section>
+
+<!-- I KNOW -->
+<section class="know">
+  <p class="reveal">Я знаю.</p>
+  <p class="reveal">Знаю, что устала. Знаю, что больно. Знаю, что не хочется ничего.</p>
+  <p class="reveal">Можно просто посидеть тут со мной.</p>
+</section>
+
+<!-- REASONS — ZA CHTO (25 пунктов) -->
+<section class="reasons tight">
+  <h2 class="reveal">За что</h2>
+  <p class="reasons-intro reveal">Не «за что я тебя», а просто <em>за что</em>. Двадцать пять штук. На чёрный день.</p>
+  <div class="reasons-grid stagger">
+    <div class="reason">За то, как ты смеёшься — будто всё внезапно стало нормально</div>
+    <div class="reason">За твою красоту. Это объективный факт, а не комплимент. Зеркало в курсе</div>
+    <div class="reason">За то, как ты делаешь губки утюжком на каждом селфи — бесит и обезоруживает одновременно</div>
+    <div class="reason">За твой ум. Ты соображаешь быстрее, чем большинство людей успевает договорить мысль</div>
+    <div class="reason">За твой голос. <em>Даже когда он, мягко говоря, временно басистый.</em> Особенно тогда. Простите за «как у мужика» — был неправ, но до сих пор смешно</div>
+    <div class="reason">За то, как ты у новогодней ёлки превращаешься в восьмилетнюю</div>
+    <div class="reason">За то, что ты тащишь нас в кафе, потому что «<em>суши же</em>», и это всегда правильное решение</div>
+    <div class="reason">За то, как ты поднимаешь брови, когда тебе что-то не нравится — самый честный детектор реальности из всех существующих</div>
+    <div class="reason">За то, что ты на любом фото красивая, а я на любом фото выгляжу как человек, которого застали врасплох в чужом холодильнике</div>
+    <div class="reason">За то, как ты пишешь длинно, когда тебе важно. И коротко — когда тебе важно. И никогда не путаешь, какой случай какой</div>
+    <div class="reason">За то, что мы умудряемся попадать в одинаковые жизненные ситуации почти всегда — статистически невозможно, но факт</div>
+    <div class="reason">За твои руки. За ногти, которые ты делаешь, будто это маленькое сражение, в котором ты каждый раз побеждаешь</div>
+    <div class="reason">За твои шутки. Они смешные не «потому что ты сказала», а действительно <em>смешные</em></div>
+    <div class="reason">За твою спортивную упёртость. Ту самую, благодаря которой ты доводишь до конца то, что другие бросают на полпути</div>
+    <div class="reason">За твою осанку. Её видно даже когда ты сидишь — её ничем не сломать</div>
+    <div class="reason">За то, что ты понимаешь людей в полслова. Иногда — в ноль</div>
+    <div class="reason">За то, что ты честная даже когда тебе невыгодно</div>
+    <div class="reason">За то, что ты не делаешь вид, что тебе ок, когда тебе не ок</div>
+    <div class="reason">За то, что ты выдерживаешь то, что в общем-то выдержать <em>нельзя</em></div>
+    <div class="reason">За то, как ты идёшь — даже если внутри тебя пять разных бурь, снаружи ты всё равно <em>идёшь</em></div>
+    <div class="reason">За то, что ты возвращаешься. Даже из тех мест, откуда обычно не возвращаются</div>
+    <div class="reason">За то, что ты не пытаешься быть удобной</div>
+    <div class="reason">За то, что ты умеешь быть маленькой и грозной одновременно</div>
+    <div class="reason">За то, что ты идеальная. Это не комплимент — это констатация. Я её замерял</div>
+    <div class="reason">За то, что ты — это <em>ты</em>. Этого и так слишком много для одного пункта</div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery tight">
+  <h2 class="reveal">Помнишь?</h2>
+  <p class="gallery-hint reveal">Если приглядеться — в семи подписях горят буквы. Сложи их по порядку. Это слово, которое я хочу, чтобы ты сегодня услышала.</p>
+  <div class="gallery-grid stagger">
+    <figure><img src="media/photos/p001.jpg" loading="lazy" alt=""><figcaption><span class="cipher">В</span> этой шапке ты опаснее, чем кажется. Любой, кто посмотрит в эти глаза, готов отдать кошелёк</figcaption></figure>
+    <figure><img src="media/photos/p003.jpg" loading="lazy" alt=""><figcaption>Сидит в кафе так, как будто только что незаметно купила всё это заведение</figcaption></figure>
+    <figure><img src="media/photos/p005.jpg" loading="lazy" alt=""><figcaption>С этого ракурса я конечно получился не очень. С других, честно говоря, тоже</figcaption></figure>
+    <figure><img src="media/photos/p010.jpg" loading="lazy" alt=""><figcaption>Сонин жест означает: «Всё пока не очень страшно». Я доверяю экспертному заключению</figcaption></figure>
+    <figure><img src="media/photos/p012.jpg" loading="lazy" alt=""><figcaption>Т<span class="cipher">ы</span> тут будто только что у мамы конфету попросила. И мама почему-то разрешила</figcaption></figure>
+    <figure><img src="media/photos/p015.jpg" loading="lazy" alt=""><figcaption><span class="cipher">Д</span>умаешь, она смеётся надо мной? Конечно надо мной. А над кем ещё ей смеяться</figcaption></figure>
+    <figure><img src="media/photos/p020.jpg" loading="lazy" alt=""><figcaption>Ёлка теперь всю жизнь будет думать, что она была хуже, чем человек рядом</figcaption></figure>
+    <figure><img src="media/photos/p022.jpg" loading="lazy" alt=""><figcaption>Стоит так, будто она на чёрно-белой обложке журнала, в который меня бы не пустили даже подметать</figcaption></figure>
+    <figure><img src="media/photos/p025.jpg" loading="lazy" alt=""><figcaption>А тут я выгляжу так, будто только что нанёс кому-то физическую боль. Возможно, ёлке</figcaption></figure>
+    <figure><img src="media/photos/p027.jpg" loading="lazy" alt=""><figcaption>Огни ёлки стараются. Но почему-то всё равно главный свет в центре кадра</figcaption></figure>
+    <figure><img src="media/photos/p030.jpg" loading="lazy" alt=""><figcaption><span class="cipher">О</span>на со спины. А я где-то рядом ещё минуту назад пытался выпрямить осанку, чтобы хоть в кадре нормально выйти</figcaption></figure>
+    <figure><img src="media/photos/p032.jpg" loading="lazy" alt=""><figcaption>Прячется. Видимо, уже поняла, кто фотограф, и решила, что это ошибка</figcaption></figure>
+    <figure><img src="media/photos/p035.jpg" loading="lazy" alt=""><figcaption>Ка<span class="cipher">х</span> я ни ставлю кадр — она всегда выходит лучше, чем я планировал. Это уже не везение, это закон</figcaption></figure>
+    <figure><img src="media/photos/p037.jpg" loading="lazy" alt=""><figcaption>Тут она думает: «Зачем я с ним пошла». Я думаю: «Не зря пошёл»</figcaption></figure>
+    <figure><img src="media/photos/p040.jpg" loading="lazy" alt=""><figcaption>Это я. Это правда я. Я очень извиняюсь</figcaption></figure>
+    <figure><img src="media/photos/p042.jpg" loading="lazy" alt=""><figcaption>Минск тут на втором плане, и его это, кажется, очень устраивает</figcaption></figure>
+    <figure><img src="media/photos/p045.jpg" loading="lazy" alt=""><figcaption>Без слов. Я вообще-то умею молчать. Особенно тут</figcaption></figure>
+    <figure><img src="media/photos/p047.jpg" loading="lazy" alt=""><figcaption>Поцелуй ёлке — справедливо. Ёлка, в отличие от меня, рожи не строит</figcaption></figure>
+    <figure><img src="media/photos/p050.jpg" loading="lazy" alt=""><figcaption>Тут мы стоим так, будто кто-то рядом громко наложил в штаны кучу. И я почти уверен, что угадайте кто</figcaption></figure>
+    <figure><img src="media/photos/p052.jpg" loading="lazy" alt=""><figcaption><span class="cipher">Н</span>у а тут я выгляжу так, будто меня только что обвинили в краже из соседнего магазина</figcaption></figure>
+    <figure><img src="media/photos/p055.jpg" loading="lazy" alt=""><figcaption>Распределение обязанностей: она красиво целует кадр, я делаю peace и изо всех сил стараюсь не моргать</figcaption></figure>
+    <figure><img src="media/photos/p057.jpg" loading="lazy" alt=""><figcaption>Маникюр у неё боевой. Я на заднем плане выгляжу как человек, у которого пять минут назад забрали телефон без объяснений</figcaption></figure>
+    <figure><img src="media/photos/p062.jpg" loading="lazy" alt=""><figcaption>Читает меню так, будто там в самом конце спрятан ответ на все жизненные вопросы</figcaption></figure>
+    <figure><img src="media/photos/p065.jpg" loading="lazy" alt=""><figcaption><span class="cipher">И</span> да, я однажды держал палочки лучше, чем она. К сожалению, этот великий день не задокументирован</figcaption></figure>
+    <figure><img src="media/photos/p072.jpg" loading="lazy" alt=""><figcaption>Прыгает в воду как профессионал. Я в это время на берегу держу телефон и тихо молюсь, чтобы он не выпал</figcaption></figure>
+    <figure><img src="media/photos/p082.jpg" loading="lazy" alt=""><figcaption>Делает вид, что прячется. На самом деле просто наслаждается тем, что хотя бы в этот раз кадр не я порчу</figcaption></figure>
+    <figure><img src="media/photos/p085.jpg" loading="lazy" alt=""><figcaption>Когда я не в кадре — кадр почему-то получается без помех. Видимо, совпадение</figcaption></figure>
+    <figure><img src="media/photos/p088.jpg" loading="lazy" alt=""><figcaption>Ёлка стоит, гирлянды светятся, всё бы хорошо, но рядом она — и весь концепт ёлки рассыпается</figcaption></figure>
+    <figure><img src="media/photos/p093.jpg" loading="lazy" alt=""><figcaption>Тут мы хоть в чём-то на равных. Жаль, что в этом</figcaption></figure>
+    <figure><img src="media/photos/p107.jpg" loading="lazy" alt=""><figcaption>Идеальная композиция: она в фокусе, я в расфокусе. Как и положено</figcaption></figure>
+  </div>
+</section>
+
+<!-- RIDDLE -->
+<section class="riddle">
+  <h2 class="reveal">Одно слово</h2>
+  <p class="reveal">В подписях горели семь букв. Сложи их по порядку. Это то, что я хочу, чтобы ты сейчас сделала.</p>
+  <form class="riddle-form" onsubmit="event.preventDefault(); check();">
+    <input type="text" id="answer" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="...">
+    <button type="submit">Это оно</button>
+    <p class="wrong" id="wrong">Не оно. Семь букв. Посмотри подписи ещё раз — они подсвечены тёплым</p>
+  </form>
+</section>
+
+<!-- FINALE — hidden until riddle solved -->
+<section class="finale" id="finale">
+  <p class="word-reveal">Выдохни.</p>
+  <h2>И теперь послушай</h2>
+  <ul class="survived">
+    <li>Ты сильная девочка. Это видно даже когда ты сама не видишь</li>
+    <li>Ты со всем справишься. Ты уже справлялась — не первый раз, не последний</li>
+    <li>Слёзы не делают тебя слабее. Они делают тебя живой. Но не плачь лишний раз — ты этого не заслужила</li>
+    <li>Ничего не длится вечно. Ни плохое, ни даже сегодняшний день</li>
+    <li>Твоё «не могу» — это просто «устала». Это разные вещи</li>
+    <li>Тебе не обязательно справляться идеально. Тебе достаточно просто <em>не сдаваться</em></li>
+    <li>Напрягаться сверх меры — не твоя работа. Твоя работа — быть, дышать, идти дальше</li>
+    <li>Всё, что сейчас тяжело, через какое-то время станет одной из тех ситуаций, после которых ты скажешь: <em>«Ну и пережила же я»</em></li>
+    <li>Ты не одна. Это не утешение — это факт</li>
+  </ul>
+  <div class="finale-videos">
+    <video src="media/videos/v01.mov" controls preload="metadata"></video>
+    <video src="media/videos/v05.mov" controls preload="metadata"></video>
+    <video src="media/videos/v09.mov" controls preload="metadata"></video>
+  </div>
+  <p class="final-line">Так что — выдохни.<br>Посиди. Поплачь, если надо. Но потом встань. Ты умеешь.<br>Я тут. Возвращайся сюда, когда тяжело.</p>
+  <p class="sign">— З.</p>
+</section>
+
+<script>
+  // ====== RIDDLE ======
+  const ANSWER = 'выдохни';
+  const answerInput = document.getElementById('answer');
+  const wrongMsg = document.getElementById('wrong');
+  const finale = document.getElementById('finale');
+
+  function unlock(instant) {
+    if (instant) {
+      finale.classList.add('open');
+      try { localStorage.setItem('sonya_unlocked', '1'); } catch(e) {}
+      return;
+    }
+    // create full-screen white flash, then transition to dark brown, then fade away revealing finale
+    const flash = document.createElement('div');
+    flash.className = 'flash-overlay';
+    document.body.appendChild(flash);
+    // reveal finale beneath the overlay while it's bright
+    finale.classList.add('open');
+    requestAnimationFrame(() => {
+      flash.classList.add('bright');
+      setTimeout(() => {
+        finale.scrollIntoView({ behavior: 'instant', block: 'start' });
+        flash.classList.add('dim');
+      }, 480);
+      setTimeout(() => {
+        flash.classList.add('fade');
+      }, 900);
+      setTimeout(() => flash.remove(), 2000);
+    });
+    try { localStorage.setItem('sonya_unlocked', '1'); } catch(e) {}
+  }
+  function check() {
+    const v = (answerInput.value || '').toLowerCase().replace(/[^а-яё]/g, '').trim();
+    if (v === ANSWER) {
+      wrongMsg.classList.remove('show');
+      unlock();
+    } else {
+      wrongMsg.classList.add('show');
+      answerInput.classList.add('shake');
+      setTimeout(() => answerInput.classList.remove('shake'), 500);
+    }
+  }
+  // persistent unlock — open instantly on reload (no flash on revisit)
+  try {
+    if (localStorage.getItem('sonya_unlocked') === '1') {
+      unlock(true);
+    }
+  } catch(e) {}
+
+  // ====== REVEAL ON SCROLL ======
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal, .stagger').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
